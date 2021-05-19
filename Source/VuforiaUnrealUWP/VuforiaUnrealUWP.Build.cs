@@ -8,7 +8,22 @@ public class VuforiaUnrealUWP : ModuleRules
 	public VuforiaUnrealUWP(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
+
+		// Unreal Engine WinRT support
+		if (Target.Platform == UnrealTargetPlatform.Win64 || Target.Platform == UnrealTargetPlatform.HoloLens)
+		{
+			// These parameters are mandatory for winrt support
+			bEnableExceptions = true;
+			bUseUnity = false;
+			CppStandard = CppStandardVersion.Cpp17;
+			PublicSystemLibraries.AddRange(new string[] { "shlwapi.lib", "runtimeobject.lib" });
+			PrivateIncludePaths.Add(Path.Combine(Target.WindowsPlatform.WindowsSdkDir,
+												"Include",
+												Target.WindowsPlatform.WindowsSdkVersion,
+												"cppwinrt"));
+		}
+
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
@@ -46,7 +61,6 @@ public class VuforiaUnrealUWP : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"ProceduralMeshComponent"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

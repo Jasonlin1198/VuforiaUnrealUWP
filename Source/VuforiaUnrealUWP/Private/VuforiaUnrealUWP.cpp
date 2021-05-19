@@ -16,17 +16,17 @@ void FVuforiaUnrealUWPModule::StartupModule()
 	FString dllName = "Vuforia.dll";
 	if (SearchForDllPath(FPaths::ProjectPluginsDir(), dllName))
 	{
-		UE_LOG(CFVuforiaLog, Warning, TEXT("StartupModule::Successfully DLL Search"));
+		UE_LOG(VuforiaLog, Warning, TEXT("StartupModule::Successfully DLL Search"));
 	}
 	//Failed in project dir, try engine plugins dir
 	else if (SearchForDllPath(FPaths::EnginePluginsDir(), dllName)) 
 	{
-		UE_LOG(CFVuforiaLog, Warning, TEXT("StartupModule::Successfully DLL Search - Found Engine"));
+		UE_LOG(VuforiaLog, Warning, TEXT("StartupModule::Successfully DLL Search - Found Engine"));
 	}
 	else
 	{
 		//Stop loading - plugin required DLL to load successfully
-		UE_LOG(CFVuforiaLog, Warning, TEXT("StartupModule::Failed DLL Search"));
+		UE_LOG(VuforiaLog, Warning, TEXT("StartupModule::Failed DLL Search"));
 	}
 
 	// register settings
@@ -78,41 +78,10 @@ bool FVuforiaUnrealUWPModule::SearchForDllPath(FString _searchBase, FString _dll
 		{
 			FPlatformProcess::AddDllDirectory(*filePath); // only load dll when needed for use. Broken with 4.11.
 			FPlatformProcess::GetDllHandle(*file); // auto-load dll with plugin - needed as 4.11 breaks above line.
-			UE_LOG(CFVuforiaLog, Warning, TEXT("Added DLL Handle"));
+			UE_LOG(VuforiaLog, Warning, TEXT("Added DLL Handle"));
 
 			return true;
 		}
 	}
 	return false;
 }
-
-
-
-//private:
-//	/** Handle to the test dll we will load */
-//	void* ExampleLibraryHandle;
-
-
-//	FString BaseDir = IPluginManager::Get().FindPlugin("VuforiaUnrealUWP")->GetBaseDir();
-//
-//	// Add on the relative location of the third party dll and load it
-//	FString LibraryPath;
-//
-//
-//#if PLATFORM_WINDOWS
-//	LibraryPath = FPaths::Combine(*BaseDir, TEXT("/Binaries/ThirdParty/Win64/Vuforia.dll"));
-//#endif 
-//
-//	ExampleLibraryHandle = !LibraryPath.IsEmpty() ? FPlatformProcess::GetDllHandle(*LibraryPath) : nullptr;
-//
-//	if (ExampleLibraryHandle)
-//	{
-//		// Call the test function in the third party library that opens a message box
-//		UE_LOG(CFVuforiaLog, Warning, TEXT("StartupModule::Loaded"));
-//
-//	}
-//	else
-//	{
-//		UE_LOG(CFVuforiaLog, Warning, TEXT("StartupModule::Not loaded"));
-//
-//	}

@@ -5,16 +5,20 @@
 
 #pragma once
 
+// Unreal Engine Files
+#include "Core.h"
+#include "GameFramework/Actor.h"
 #include "Camera/CameraActor.h"
 
-#include "ProceduralMeshComponent.h"
+// Vuforia Files
+#include <Vuforia/DataSet.h>
+#include <Vuforia/CameraDevice.h>
+
+// Standard C Libs
+#include <string>
 
 #include "VuforiaUnrealUWPActor.generated.h"
 
-
-class FViewport;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVuforiaTrackingEvent);
 
 /**
 * VuforiaActor positions the camera according to the transformation received from the Vuforia SDK
@@ -34,26 +38,42 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable, Category = "Vuforia")
+	void BeginInitVuforia();
 
-	UPROPERTY(BlueprintAssignable, Category = "Vuforia")
-	FVuforiaTrackingEvent TrackingFound;
-
-	UPROPERTY(BlueprintAssignable, Category = "Vuforia")
-	FVuforiaTrackingEvent TrackingLost;
+	UFUNCTION(BlueprintCallable, Category = "Vuforia")
+	void BeginCameraVuforia();
 
 private:
 
+	// The currently activated Vuforia DataSet.
+	Vuforia::DataSet* currentDataSet = nullptr;
 
-	constexpr char licenseKey[] = "AVUUtdr/////AAABmVYAZEopnUpJs5SuKrDRvAIvazpGTLd95mB3qRdVTkIUcr9UUu1W9oUBgylfrN4Lu5jFJmuqzxy+m4s6Cs0jZm+0Mh6CqzsVzzjXtyV3iqUjntm0sdjcNKnUnHg0CC+1thEi/YbRrsIcM9n3dHcbGuK/Hy2m1iHKzVFEAxRI3Dj1IUK+c3kMbN3TvJznZw3znw+/MKQq3mNI7jBdOZlBt0TIurwuxQQbLAc8PMz/0lWtTa7vGkY6wt/7k5CE/DYWoccLCP5ULHc6D0vXnzyVfwxiP9l5O5RmiCC5EHwCz8oaWvwmehyOOjplSpIAGh7uJTUFAfg9cm1+PGPwcGl/QIoB3j+SuzmpavvkSlHYwx7M";
+	// The Vuforia camera mode to use, either DEFAULT, SPEED or QUALITY.
+	Vuforia::CameraDevice::MODE cameraMode = Vuforia::CameraDevice::MODE_DEFAULT;
+
+	// True when the Vuforia camera is currently started.
+	bool isCameraActive = false;
+
+	// True when the Vuforia camera has been started. The camera may currently
+	// be stopped because AR has been paused.
+	bool isCameraStarted = false;
+
+	// Vuforia
+	bool initAR();
 
 	bool initVuforiaInternal();
 
+	bool initTrackers();
 
-	FVector2D GetArPlaneScale();
+	bool loadTrackerData();
+	Vuforia::DataSet* loadAndActivateDataSet(std::string path);
 
-	void OnCameraActive();
+	bool startAR();
 
+	bool startTrackers();
+
+	// Vuforia4Unreal Signatures 
 	void HideDefaultPawnCollisionComponent();
 
-	class UVuforiaVideoPlaneComponent* mVideoPlane;
 };

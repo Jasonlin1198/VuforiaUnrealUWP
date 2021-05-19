@@ -36,7 +36,7 @@ public class VuforiaSDK : ModuleRules
 			isLibrarySupported = true;
 
 			// Add the static import library 
-			PublicAdditionalLibraries.Add(Path.Combine(ModulePath, "VuforiaSDK", "lib", platformString , "Vuforia.lib"));
+			PublicAdditionalLibraries.Add(Path.Combine(ModulePath, "VuforiaSDK", "lib", platformString, "Vuforia.lib"));
 
 			// Add include directory path
 			PublicIncludePaths.Add(Path.Combine(ModulePath, "VuforiaSDK", "include"));
@@ -46,7 +46,9 @@ public class VuforiaSDK : ModuleRules
 
 			// Ensure that the DLL is staged along with the executable
 			RuntimeDependencies.Add(Path.Combine("$(PluginDir)", "Binaries", "ThirdParty", "Win64", "Vuforia.dll"));
+
 		}
+
 		return isLibrarySupported;
 
 	}
