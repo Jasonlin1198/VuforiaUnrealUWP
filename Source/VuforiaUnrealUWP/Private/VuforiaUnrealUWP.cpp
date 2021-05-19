@@ -76,8 +76,8 @@ bool FVuforiaUnrealUWPModule::SearchForDllPath(FString _searchBase, FString _dll
 		const FString fileName = FPaths::GetCleanFilename(file);
 		if (fileName.Compare(_dllName) == 0)
 		{
-			FPlatformProcess::AddDllDirectory(*filePath); // only load dll when needed for use. Broken with 4.11.
-			FPlatformProcess::GetDllHandle(*file); // auto-load dll with plugin - needed as 4.11 breaks above line.
+			FPlatformProcess::AddDllDirectory(*filePath); // only load dll when needed for use
+			FPlatformProcess::GetDllHandle(*file); // auto-load dll with plugin
 			UE_LOG(VuforiaLog, Warning, TEXT("Added DLL Handle"));
 
 			return true;
