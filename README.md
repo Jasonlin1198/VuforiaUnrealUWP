@@ -2,7 +2,6 @@
 
 Here I document my process of developing an Unreal Engine 4.26.2 Plugin that enables the use of Vuforia into a project targeted for the Hololens 2. 
 
-
 ## Getting Started
 
 First you will need to install the Vuforia Engine for UWP. Here I downloaded the `vuforia-sdk-uwp-9-8-8.zip` from https://developer.vuforia.com/downloads/sdk.
